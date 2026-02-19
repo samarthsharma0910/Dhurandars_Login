@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Policy Auth</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- LEFT -->
+<div class="left">
+
+<div class="logo"> Prism</div>
+
+<div class="title">Welcome to Prism</div>
+<div class="subtitle">Secure access to your compliance and policy dashboard</div>
+
+<div class="tabs">
+<button id="signInTab" class="active">Sign In</button>
+<button id="signUpTab">Sign Up</button>
+</div>
+
+<!-- SIGN IN -->
+<form id="signInForm">
+
+<div class="input-box">
+<input id="siUser" placeholder="Username">
+<div class="error">Required</div>
+</div>
+
+<div class="input-box">
+<input id="siEmail" placeholder="Email">
+<div class="error">Invalid Email</div>
+</div>
+
+<div class="input-box">
+<input type="password" id="siPass" placeholder="Password">
+<div class="error">Required</div>
+</div>
+
+<button class="submit-btn">Sign In</button>
+
+</form>
+
+<!-- SIGN UP -->
+<form id="signUpForm" class="hide">
+
+<div class="input-box">
+<input id="suUser" placeholder="Username">
+<div class="error">Required</div>
+</div>
+
+<div class="input-box">
+<input id="suEmail" placeholder="Email">
+<div class="error">Invalid Email</div>
+</div>
+
+<div class="input-box">
+<input type="password" id="suPass" placeholder="Password">
+<div class="error">Required</div>
+</div>
+
+<div class="input-box">
+<input type="password" id="suConfirm" placeholder="Confirm Password">
+<div class="error">Passwords must match</div>
+</div>
+
+<button class="submit-btn">Sign Up</button>
+
+</form>
+<div class="divider">
+    <span>OR CONTINUE WITH</span>
+</div>
+<!-- ICONS -->
+<div class="social-icons">
+<img src="https://www.svgrepo.com/show/475656/google-color.svg">
+</div>
+
+</div>
+
+<!-- RIGHT -->
+<div class="right">
+
+<div class="slider-wrapper">
+
+<div class="slider-track" id="sliderTrack">
+
+<div class="slide-card">
+<div class="slide-icon">📱</div>
+<h3>Prism Security Intelligence</h3>
+<p>Advanced policy protection powered by intelligent automation and monitoring</p>
+</div>
+
+<div class="slide-card">
+<div class="slide-icon">📋</div>
+<h3>Prism Compliance Engine</h3>
+<p>Automate regulatory checks and maintain real-time compliance visibility.</p>
+</div>
+
+<div class="slide-card">
+<div class="slide-icon">🧠</div>
+<h3>Prism AI Decision Insights</h3>
+<p>Transparent, explainable AI that supports secure and accountable decision making.</p>
+</div>
+
+</div>
+
+<div class="dots">
+<div class="dot active"></div>
+<div class="dot"></div>
+<div class="dot"></div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+signUpTab.onclick = () => {
+signUpForm.classList.remove("hide");
+signInForm.classList.add("hide");
+signUpTab.classList.add("active");
+signInTab.classList.remove("active");
+}
+signInTab.onclick = () => {
+signInForm.classList.remove("hide");
+signUpForm.classList.add("hide");
+signInTab.classList.add("active");
+signUpTab.classList.remove("active");
+}
+
+/* EMAIL VALIDATION */
+function validEmail(e){
+return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+}
+
+/* SLIDER  */
+
+let slides = document.querySelectorAll(".slide-card");
+let dots = document.querySelectorAll(".dot");
+
+let index = 0;
+
+/*  slide */
+slides[index].classList.add("active");
+dots[index].classList.add("active");
+setInterval(()=>{
+
+  slides[index].classList.remove("active");
+  dots[index].classList.remove("active");
+setTimeout(() => {
+    
+
+  index++;
+  if(index >= slides.length){
+    index = 0;
+  }
+
+  slides[index].classList.add("active");
+  dots[index].classList.add("active");
+
+},1800);
+},6000);
+
+</script>
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } 
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB1yKdM9YUUNN_2scxjAw9FfKivo3pgbDU",
+    authDomain: "prism-52a40.firebaseapp.com",
+    projectId: "prism-52a40",
+  authDomain: "prism-52a40.firebaseapp.com",
+  projectId: "prism-52a40",
+  storageBucket: "prism-52a40.firebasestorage.app",
+  messagingSenderId: "155204399332",
+  appId: "1:155204399332:web:98bd99992792b3e55a3cf1"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+/* SIGN UP */
+document.getElementById("signUpForm").addEventListener("submit", async (e)=>{
+e.preventDefault();
+
+const email = document.getElementById("suEmail").value;
+const pass = document.getElementById("suPass").value;
+
+try{
+await createUserWithEmailAndPassword(auth,email,pass);
+alert("Signup Success");
+}catch(err){
+alert(err.message);
+}
+});
+
+/* SIGN IN */
+document.getElementById("signInForm").addEventListener("submit", async (e)=>{
+e.preventDefault();
+
+const email = document.getElementById("siEmail").value;
+const pass = document.getElementById("siPass").value;
+
+try{
+await signInWithEmailAndPassword(auth,email,pass);
+alert("Login Success");
+}catch(err){
+alert(err.message);
+}
+});
+
+/* GOOGLE LOGIN */
+const provider = new GoogleAuthProvider();
+
+document.querySelector(".social-icons img").addEventListener("click", async ()=>{
+try{
+await signInWithPopup(auth, provider);
+alert("Google Login Success");
+}catch(err){
+alert(err.message);
+}
+});
+
+</script>
+
+
+
+</body>
+</html>
