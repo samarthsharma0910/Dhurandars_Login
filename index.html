@@ -167,6 +167,8 @@ setTimeout(() => {
 
 </script>
 <script type="module">
+const REDIRECT_URL = "https://data-policy-agent-production-8d93.up.railway.app/"; 
+
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } 
@@ -195,7 +197,7 @@ const pass = document.getElementById("suPass").value;
 
 try{
 await createUserWithEmailAndPassword(auth,email,pass);
-alert("Signup Success");
+window.location.href = REDIRECT_URL;
 }catch(err){
 alert(err.message);
 }
@@ -210,7 +212,7 @@ const pass = document.getElementById("siPass").value;
 
 try{
 await signInWithEmailAndPassword(auth,email,pass);
-alert("Login Success");
+window.location.href = REDIRECT_URL;
 }catch(err){
 alert(err.message);
 }
@@ -222,7 +224,7 @@ const provider = new GoogleAuthProvider();
 document.querySelector(".social-icons img").addEventListener("click", async ()=>{
 try{
 await signInWithPopup(auth, provider);
-alert("Google Login Success");
+window.location.href = REDIRECT_URL;
 }catch(err){
 alert(err.message);
 }
@@ -233,4 +235,5 @@ alert(err.message);
 
 
 </body>
+
 </html>
